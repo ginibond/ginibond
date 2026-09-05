@@ -1,0 +1,455 @@
+mixed-port: 7890
+geox-url:
+  geoip: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat"
+  geosite: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat"
+  mmdb: "https://download-1302801676.cos.ap-shanghai.myqcloud.com/Country/Country_All.mmdb"
+geo-auto-update: true
+geo-update-interval: 24
+find-process-mode: strict
+profile:
+  store-selected: true
+  store-fake-ip: true
+tcp-concurrent: true
+allow-lan: true
+mode: rule
+log-level: info
+ipv6: true
+#interface-name: en0
+
+dns:
+  enable: true
+  listen: 0.0.0.0:53
+  prefer-h3: true
+  ipv6: true
+  default-nameserver:
+#    - 114.114.114.114
+    - tls://223.5.5.5:853
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter:
+    - '*.lan'
+    - '*.linksys.com'
+    - '+.pool.ntp.org'
+    - localhost.ptlogin2.qq.com
+    - +.stun.*.*
+    - +.stun.*.*.*
+    - +.stun.*.*.*.*
+    - +.stun.*.*.*.*.*
+    - "*.n.n.srv.nintendo.net"
+    - +.stun.playstation.net
+    - xbox.*.*.microsoft.com
+    - "*.*.xboxlive.com"
+    - "*.msftncsi.com"
+    - "*.msftconnecttest.com"
+    - WORKGROUP
+  nameserver-policy:
+    "geosite:cn": 
+      - https://dns.alidns.com/dns-query
+      - https://doh.pub/dns-query
+  nameserver:
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
+  fallback:
+    - 8.8.8.8
+    - tcp://1.1.1.1
+  fallback-filter:
+    geoip: true
+    geoip-code: CN
+    geosite:
+      - gfw
+    ipcidr:
+      - 240.0.0.0/4
+    domain:
+      - '+.google.com'
+      - '+.facebook.com'
+      - '+.youtube.com'
+
+tun:
+  enable: true
+  stack: gvisor
+  auto-route: true
+  auto-detect-interface: true
+  dns-hijack:
+    - any:53
+
+proxy-providers:
+  ALL: &ALL
+    type: http
+    path: ./Proxies/ALL.yaml
+    url: 写订阅
+    interval: 86400
+    health-check:
+      enable: true
+      url: http://www.gstatic.com/generate_204
+      interval: 86400
+  HK:
+   <<: *ALL
+   filter: "(?i)(香港|HK|Hong|🇭🇰|深港|沪港|HKG|𝘏𝘰𝘯𝘨 𝘒𝘰𝘯𝘨)"
+  TW:
+   <<: *ALL
+   filter: "(?i)(台湾|台灣|TW|Taiwan|🇹🇼|台北|新北|彰化|深台|沪台|广台|京台)"
+  SG:
+   <<: *ALL
+   filter: "(?i)(新加坡|SG|Singapore|🇸🇬|狮城|SGP|深新|沪新|广新|京新)"
+  JP:
+   <<: *ALL
+   filter: "(?i)(日本|JP|Japan|🇯🇵|东京|大阪|埼玉|川崎|深日|沪日|广日|京日)"
+  US:
+   <<: *ALL
+   filter: "(?i)(美国|US|America|United States|🇺🇸|洛杉矶|圣何塞|西雅图|波特兰|纽约|中美|深美|沪美|广美|京美)"
+  KR:
+   <<: *ALL
+   filter: "(?i)(韩国|韓國|KR|Korea|🇰🇷|首尔|春川|深韩|沪韩|广韩|京韩)"
+  DE:
+   <<: *ALL
+   filter: "(?i)(德国|德國|DE|Germany|🇩🇪|法兰克福|慕尼黑)"
+  UK:
+   <<: *ALL
+   filter: "(?i)(英国|英國|UK|Britain|United Kingdom|🇬🇧|伦敦)"
+  FR:
+   <<: *ALL
+   filter: "(?i)(法国|法國|FR|France|🇫🇷|巴黎)"
+
+proxy-groups:
+
+  - name: "Global"
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Global.png
+    type: select
+    proxies:
+      - Hong Kong
+      - Taiwan
+      - Singapore
+      - Japan
+      - United States
+      - Korea
+      - Germany
+      - United Kingdom
+      - France
+      - DIRECT
+   
+  - name: "Telegram"
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Telegram.png
+    type: select
+    proxies:
+      - Hong Kong
+      - Taiwan
+      - Singapore
+      - Japan
+      - United States
+      - Korea
+      - Germany
+      - United Kingdom
+      - France
+      
+  - name: "Google"
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Google.png
+    type: select
+    proxies:
+      - Hong Kong
+      - Taiwan
+      - Singapore
+      - Japan
+      - United States
+      - Korea
+      - Germany
+      - United Kingdom
+      - France
+
+  - name: "Twitter"
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Twitter.png
+    type: select
+    proxies:
+      - Hong Kong
+      - Taiwan
+      - Singapore
+      - Japan
+      - United States
+      - Korea
+      - Germany
+      - United Kingdom
+      - France
+
+  - name: "Facebook"
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Facebook.png
+    type: select
+    proxies:
+      - Hong Kong
+      - Taiwan
+      - Singapore
+      - Japan
+      - United States
+      - Korea
+      - Germany
+      - United Kingdom
+      - France
+
+  - name: "Instagram"
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Instagram.png
+    type: select
+    proxies:
+      - Hong Kong
+      - Taiwan
+      - Singapore
+      - Japan
+      - United States
+      - Korea
+      - Germany
+      - United Kingdom
+      - France
+
+  - name: "Threads"
+    icon: https:\/\/raw.githubusercontent.com\/lige47\/QuanX-icon-rule\/main\/icon\/04ProxySoft\/Threads.png
+    type: select
+    proxies:
+      - Hong Kong
+      - Taiwan
+      - Singapore
+      - Japan
+      - United States
+      - Korea
+      - Germany
+      - United Kingdom
+      - France
+
+  - name: "TikTok"
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/TikTok.png
+    type: select
+    proxies:
+      - Hong Kong
+      - Taiwan
+      - Singapore
+      - Japan
+      - United States
+      - Korea
+      - Germany
+      - United Kingdom
+      - France
+
+  - name: "YouTube"
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/YouTube.png
+    type: select
+    proxies:
+      - Hong Kong
+      - Taiwan
+      - Singapore
+      - Japan
+      - United States
+      - Korea
+      - Germany
+      - United Kingdom
+      - France
+
+  - name: "Discord"
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Discord.png
+    type: select
+    proxies:
+      - Hong Kong
+      - Taiwan
+      - Singapore
+      - Japan
+      - United States
+      - Korea
+      - Germany
+      - United Kingdom
+      - France
+
+  - name: "Hong Kong"
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Hong_Kong.png
+    type: select
+    use:
+      - HK
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 86400
+
+  - name: "Taiwan"
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Taiwan.png
+    type: select
+    use:
+      - TW
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 86400
+
+  - name: "Singapore"
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Singapore.png
+    type: select
+    use:
+      - SG
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 86400
+
+  - name: "Japan"
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Japan.png
+    type: select
+    use:
+      - JP
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 86400
+
+  - name: "United States"
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/United_States.png
+    type: select
+    use:
+      - US
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 86400
+
+  - name: "Korea"
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Korea.png
+    type: select
+    use:
+      - KR
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 86400
+
+  - name: "Germany"
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Germany.png
+    type: select
+    use:
+      - DE
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 86400
+
+  - name: "United Kingdom"
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/United_Kingdom.png
+    type: select
+    use:
+      - UK
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 86400
+
+  - name: "France"
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/France.png
+    type: select
+    use:
+      - FR
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 86400
+
+rule-providers:
+
+  Direct:
+    type: http
+    behavior: classical
+    path: ./Clash/Direct/Direct.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Direct/Direct.yaml"
+    interval: 86400
+
+  Advertising:
+    type: http
+    behavior: classical
+    path: ./Clash/Advertising/Advertising.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/AdvertisingLite/AdvertisingLite.yaml"
+    interval: 86400
+
+  Google:
+    type: http
+    behavior: classical
+    path: ./Clash/Google/Google.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Google/Google.yaml"
+    interval: 86400
+    
+  Apple:
+    type: http
+    behavior: classical
+    path: ./Clash/Apple/Apple.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Apple/Apple.yaml"
+    interval: 86400
+
+  Twitter:
+    type: http
+    behavior: classical
+    path: ./Clash/Twitter/Twitter.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Twitter/Twitter.yaml"
+    interval: 86400
+
+  Facebook:
+    type: http
+    behavior: classical
+    path: ./Clash/Facebook/Facebook.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Facebook/Facebook.yaml"
+    interval: 86400
+    
+  Telegram:
+    type: http
+    behavior: classical
+    path: ./Clash/Telegram/Telegram.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram.yaml"
+    interval: 86400
+    
+  Instagram:
+    type: http
+    behavior: classical
+    path: ./Clash/Instagram/Instagram.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Instagram/Instagram.yaml"
+    interval: 86400
+
+  #GlobalMedia:
+    #type: http
+    #behavior: classical
+    #path: ./Clash/GlobalMedia/GlobalMedia.yaml
+    #url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GlobalMedia/GlobalMedia.yaml"
+    #interval: 86400
+
+  TikTok:
+    type: http
+    behavior: classical
+    path: ./Clash/TikTok/TikTok.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/TikTok/TikTok.yaml"
+    interval: 86400
+
+  Threads:
+    type: http
+    behavior: classical
+    path: ./Clash/Threads/Threads.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Threads/Threads.yaml"
+    interval: 86400
+
+  Discord:
+    type: http
+    behavior: classical
+    path: ./Clash/Discord/Discord.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Discord/Discord.yaml"
+    interval: 86400
+
+  YouTube:
+    type: http
+    behavior: classical
+    path: ./Clash/YouTube/YouTube.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/YouTube/YouTube.yaml"
+    interval: 86400
+    
+  Global:
+    type: http
+    behavior: classical
+    path: ./Clash/GlobalMedia/GlobalMedia.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Global/Global.yaml"
+    interval: 86400
+
+rules:
+  - IP-CIDR,130.107.0.0/16,Global
+  - RULE-SET,Direct,DIRECT
+  - RULE-SET,Google,Google
+  - RULE-SET,Twitter,Twitter
+  - RULE-SET,Facebook,Facebook
+  - RULE-SET,Threads,Threads
+  - RULE-SET,Discord,Discord
+  - RULE-SET,YouTube,YouTube
+  - RULE-SET,Apple,DIRECT
+  - RULE-SET,Instagram,Instagram
+#  - RULE-SET,ChinaMedia,DIRECT
+  - RULE-SET,TikTok,TikTok
+  #- RULE-SET,GlobalMedia,Global
+  - RULE-SET,Telegram,Telegram
+  - RULE-SET,Global,Global
+#  - IP-CIDR,192.168.0.0/16,DIRECT
+#  - IP-CIDR,10.0.0.0/8,DIRECT
+#  - IP-CIDR,172.16.0.0/12,DIRECT
+#  - IP-CIDR,127.0.0.0/8,DIRECT
+#  - IP-CIDR,100.64.0.0/10,DIRECT
+#  - IP-CIDR,224.0.0.0/4,DIRECT
+#  - IP-CIDR,fe80::/10,DIRECT
+#  - IP-CIDR,119.28.28.28/32,DIRECT
+#  - IP-CIDR,182.254.116.0/24,DIRECT
+#  - IP-CIDR,125.91.16.220/32,DIRECT
+  - GEOIP,CN,DIRECT
+
